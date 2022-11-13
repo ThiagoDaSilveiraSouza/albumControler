@@ -17,11 +17,6 @@ import {
   filterCardList,
 } from "./utils";
 
-interface IFilteredCardList {
-  obtainedCards: ICard[];
-  missingCards: ICard[];
-}
-
 function App() {
   const checkedListLocalStorageName = "checkedList";
   const cardListfromLocalStorage = getValueFromLocalStorage<ICard[]>(
@@ -62,14 +57,14 @@ function App() {
       <CardContainer
         cardList={obtainedCards}
         cardHandleClick={cardHandleClick}
-        title="Todas as figurinhas"
+        title={"Todas as figurinhas: " + obtainedCards.length}
       />
       <button onClick={resetCheckedList}>Reiniciar lista</button>
       {!!missingCards.length && (
         <CardContainer
           cardList={missingCards}
           cardHandleClick={cardHandleClick}
-          title="Figurinha faltantes"
+          title={"Figurinha faltantes" + missingCards.length}
         />
       )}
     </div>
