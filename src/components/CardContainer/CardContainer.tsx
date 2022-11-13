@@ -8,6 +8,7 @@ const CardContainerStyle = styled.div`
   user-select: none;
   h2 {
     margin: 40px 0;
+    text-align: center;
   }
   > div {
     display: flex;
@@ -28,16 +29,16 @@ const CardStyle = styled.div<ICardStyle>`
 
   width: 50px;
   height: 70px;
-  border: 1px solid ${({ isChecked }) => (!isChecked ? "green" : "white")};
-  color: ${({ isChecked }) => (!isChecked ? "green" : "white")};
+  border: 1px solid ${({ isChecked }) => (!isChecked ? "green" : "black")};
+  color: ${({ isChecked }) => (!isChecked ? "green" : "black")};
   box-shadow: ${({ isChecked }) => (!isChecked ? "0 0 4px 0 green" : "none")};
   font-weight: ${({ isChecked }) => (!isChecked ? "bolder" : "none")};
   user-select: none;
   cursor: pointer;
   :hover {
     transform: scale(1.2);
-    border: 1px solid ${({ isChecked }) => (isChecked ? "green" : "white")};
-    color: ${({ isChecked }) => (isChecked ? "green" : "white")};
+    border: 1px solid ${({ isChecked }) => (isChecked ? "green" : "black")};
+    color: ${({ isChecked }) => (isChecked ? "green" : "black")};
     box-shadow: ${({ isChecked }) => (isChecked ? "0 0 4px 0 green" : "none")};
     font-weight: ${({ isChecked }) => (isChecked ? "bolder" : "none")};
   }

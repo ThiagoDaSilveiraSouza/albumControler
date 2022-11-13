@@ -57,14 +57,14 @@ function App() {
       <CardContainer
         cardList={obtainedCards}
         cardHandleClick={cardHandleClick}
-        title={"Todas as figurinhas: " + obtainedCards.length}
+        title={"Figurinhas já adquiridas: " + obtainedCards.length}
       />
       <button onClick={resetCheckedList}>Reiniciar lista</button>
       {!!missingCards.length && (
         <CardContainer
           cardList={missingCards}
           cardHandleClick={cardHandleClick}
-          title={"Figurinha faltantes" + missingCards.length}
+          title={"Figurinha faltantes: " + missingCards.length}
         />
       )}
     </div>
