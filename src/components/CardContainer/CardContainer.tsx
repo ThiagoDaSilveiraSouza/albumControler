@@ -6,6 +6,7 @@ import { ICard } from "../../interfaces";
 
 const CardContainerStyle = styled.div`
   user-select: none;
+  overflow: hidden;
   h2 {
     margin: 40px 0;
     text-align: center;
