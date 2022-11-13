@@ -37,12 +37,48 @@ function App() {
       const updatedCheckedList = checkedList.map((currentCard) => {
         const isTargetCard = currentCard.id === cardId;
         if (isTargetCard) {
-          currentCard.isChecked = !currentCard.isChecked;
+          const currentCardIsChecked = currentCard.isChecked;
+          currentCard.isChecked = !currentCardIsChecked;
+          if (currentCardIsChecked) {
+            currentCard.quantity = 0;
+          } else {
+            currentCard.quantity = 1;
+          }
+          console.log("quantity", currentCard.quantity);
         }
         return currentCard;
       });
 
       updateLocalStorageCheckedList(updatedCheckedList);
+      return updatedCheckedList;
+    });
+  };
+
+  const addOrRemoveQuantity = (
+    id: string,
+    addOrRemove: "add" | "remove" = "add",
+    quantity: number = 1
+  ) => {
+    setCheckedList((checkedList) => {
+      const updatedCheckedList = checkedList.map((currentCard) => {
+        const isCurrentCard = currentCard.id === id;
+
+        if (isCurrentCard) {
+          if (addOrRemove === "add") {
+            currentCard.quantity = currentCard.quantity + quantity;
+          } else if (addOrRemove === "remove") {
+            const quantityIsGreaterOne = currentCard.quantity > 1;
+            if (quantityIsGreaterOne) {
+              currentCard.quantity = currentCard.quantity - quantity;
+            } else {
+              currentCard.quantity = 0;
+              currentCard.isChecked = false;
+            }
+          }
+        }
+
+        return currentCard;
+      });
       return updatedCheckedList;
     });
   };
@@ -65,6 +101,8 @@ function App() {
           cardList={missingCards}
           cardHandleClick={cardHandleClick}
           title={"Figurinhas já adquiridas: " + missingCards.length}
+          showQuantity
+          addOrRemoveQuantity={addOrRemoveQuantity}
         />
       )}
     </div>
