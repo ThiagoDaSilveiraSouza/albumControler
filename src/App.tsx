@@ -1,34 +1,79 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState } from "react";
+// style
+import "./App.css";
+
+// components
+import { CardContainer } from "./components";
+
+// interfaces
+import { ICard } from "./interfaces";
+
+// utils
+import {
+  createDefaultCardList,
+  getValueFromLocalStorage,
+  setValueOnLocalStorage,
+  removeLocalStorage,
+  filterCardList,
+} from "./utils";
+
+interface IFilteredCardList {
+  obtainedCards: ICard[];
+  missingCards: ICard[];
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const checkedListLocalStorageName = "checkedList";
+  const cardListfromLocalStorage = getValueFromLocalStorage<ICard[]>(
+    checkedListLocalStorageName
+  );
+  const defaultCardList = createDefaultCardList();
+  const [checkedList, setCheckedList] = useState<ICard[]>(
+    cardListfromLocalStorage || defaultCardList
+  );
+  const { missingCards, obtainedCards } = filterCardList(checkedList);
+
+  const updateLocalStorageCheckedList = (checkedList: ICard[]) => {
+    setValueOnLocalStorage(checkedListLocalStorageName, checkedList);
+  };
+
+  const cardHandleClick = (cardId: string) => {
+    setCheckedList((checkedList) => {
+      const updatedCheckedList = checkedList.map((currentCard) => {
+        const isTargetCard = currentCard.id === cardId;
+        if (isTargetCard) {
+          currentCard.isChecked = !currentCard.isChecked;
+        }
+        return currentCard;
+      });
+
+      updateLocalStorageCheckedList(updatedCheckedList);
+      return updatedCheckedList;
+    });
+  };
+
+  const resetCheckedList = () => {
+    removeLocalStorage(checkedListLocalStorageName);
+    setCheckedList(defaultCardList);
+  };
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <CardContainer
+        cardList={obtainedCards}
+        cardHandleClick={cardHandleClick}
+        title="Todas as figurinhas"
+      />
+      <button onClick={resetCheckedList}>Reiniciar lista</button>
+      {!!missingCards.length && (
+        <CardContainer
+          cardList={missingCards}
+          cardHandleClick={cardHandleClick}
+          title="Figurinha faltantes"
+        />
+      )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -39,3 +39,10 @@
 .read-the-docs {
   color: #888;
 }
+
+.centralizer {
+  margin: 0 auto;
+  max-width: 95vw;
+  width: 1000px;
+  padding: 50px 0;
+}
