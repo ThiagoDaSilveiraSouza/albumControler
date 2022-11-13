@@ -20,6 +20,7 @@ const CardContainerStyle = styled.div`
 
 interface ICardStyle {
   isChecked?: boolean;
+  quantity: number;
 }
 
 const CardStyle = styled.div<ICardStyle>`
@@ -28,23 +29,56 @@ const CardStyle = styled.div<ICardStyle>`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-
   width: 80px;
   height: 100px;
-  border: 1px solid ${({ isChecked }) => (isChecked ? "green" : "black")};
-  color: ${({ isChecked }) => (isChecked ? "green" : "black")};
   background: white;
-  box-shadow: ${({ isChecked }) => (isChecked ? "0 0 4px 0 green" : "none")};
-  font-weight: ${({ isChecked }) => (isChecked ? "bolder" : "none")};
   user-select: none;
   cursor: pointer;
+
+  ${({ isChecked, quantity }) => {
+    if (isChecked) {
+      const haveRepeatedCard = quantity > 1;
+      if (haveRepeatedCard) {
+        return `
+          border: 1px solid orange;
+          color: orange;
+          box-shadow: 0 0 2px 0 orange;
+          `;
+      }
+      return `
+        border: 1px solid green;
+        color: green;
+        box-shadow: 0 0 2px 0 green;
+        `;
+    } else {
+      return `
+        border: 1px solid black;
+        color: black;
+        box-shadow: 0 0 2px 0 black;
+      `;
+    }
+  }}
   :hover {
     transform: scale(1.5);
-    border: 1px solid ${({ isChecked }) => (!isChecked ? "green" : "black")};
-    color: ${({ isChecked }) => (!isChecked ? "green" : "black")};
-    box-shadow: ${({ isChecked }) => (!isChecked ? "0 0 4px 0 green" : "none")};
-    font-weight: ${({ isChecked }) => (!isChecked ? "bolder" : "none")};
     z-index: 100;
+
+    ${({ isChecked, quantity }) => {
+      if (isChecked) {
+        const haveRepeatedCard = quantity > 1;
+        if (haveRepeatedCard) {
+          return `
+          color: orange;
+          `;
+        }
+        return `
+        box-shadow: 0 0 4px 0 green;
+        `;
+      } else {
+        return `
+        box-shadow: 0 0 4px 0 black;
+      `;
+      }
+    }}
   }
 `;
 
@@ -52,21 +86,81 @@ const IdNumber = styled.span`
   font-size: 20px;
 `;
 
-const QuantityContainer = styled.span`
+interface IQuantityContainer {
+  isChecked: boolean;
+  quantity: number;
+}
+const QuantityContainer = styled.span<IQuantityContainer>`
   top: 5px;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 3px;
+
+  > button {
+    ${({ isChecked, quantity }) => {
+      if (isChecked) {
+        const haveRepeatedCard = quantity > 1;
+        if (haveRepeatedCard) {
+          return `
+          border: 1px solid orange;
+          color: orange;
+          `;
+        }
+        return `
+        border: 1px solid green;
+        color: green;
+        `;
+      } else {
+        return `
+        border: 1px solid black;
+        color: black;
+      `;
+      }
+    }}
+  }
+  strong {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+  }
 `;
 
-const QuantityButton = styled.button`
+interface IQuantityButton {
+  buttonType: "add" | "remove";
+}
+
+const QuantityButton = styled.button<IQuantityButton>`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 5px;
   width: 25px;
-  height: 25 px;
+  height: 25px;
+  border-radius: 0;
   overflow: hidden;
+
+  :hover {
+    ${({ buttonType }) => {
+      if (buttonType === "add") {
+        return `
+        box-shadow: 0 0 3px 0 green;
+        color: green;
+        border:1px solid green  ;
+        `;
+      } else if (buttonType === "remove") {
+        return `
+        box-shadow: 0 0 3px 0 red;
+        color: red;
+        border:1px solid red;
+        `;
+      }
+    }}
+  }
+  :focus {
+    outline: none;
+  }
 `;
 interface ICardComponent {
   currentCard: ICard;
@@ -84,11 +178,16 @@ const CardComponent: FC<ICardComponent> = ({
   return (
     <CardStyle
       isChecked={currentCard.isChecked}
+      quantity={currentCard.quantity}
       onClick={() => !addOrRemoveQuantity && cardHandleClick(currentCard.id)}
     >
       {showQuantity && (
-        <QuantityContainer>
+        <QuantityContainer
+          isChecked={currentCard.isChecked}
+          quantity={currentCard.quantity}
+        >
           <QuantityButton
+            buttonType="remove"
             onClick={() =>
               addOrRemoveQuantity &&
               addOrRemoveQuantity(currentCard.id, "remove")
@@ -96,8 +195,9 @@ const CardComponent: FC<ICardComponent> = ({
           >
             -
           </QuantityButton>
-          {currentCard.quantity}
+          <strong>{currentCard.quantity}</strong>
           <QuantityButton
+            buttonType="add"
             onClick={() =>
               addOrRemoveQuantity && addOrRemoveQuantity(currentCard.id)
             }
