@@ -10,7 +10,7 @@ const createNewCard = (currentItem: any, id: number) => {
     id: currentId,
     name: `Card ${currentId}`,
     imgPath: "",
-    isChecked: true,
+    isChecked: false,
   };
 
   return currentItem;

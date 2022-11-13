@@ -11,9 +11,9 @@ export const filterCardList = (cardList: ICard[]): IFilteredCardList => {
       const currentCardIsChecked = currentCard.isChecked;
 
       if (currentCardIsChecked) {
-        filteredCardList.obtainedCards.push(currentCard);
-      } else {
         filteredCardList.missingCards.push(currentCard);
+      } else {
+        filteredCardList.obtainedCards.push(currentCard);
       }
       return filteredCardList;
     },
