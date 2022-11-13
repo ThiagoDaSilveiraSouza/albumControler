@@ -25,11 +25,12 @@ interface ICardStyle {
 const CardStyle = styled.div<ICardStyle>`
   position: relative;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
 
   width: 80px;
-  height: 110px;
+  height: 100px;
   border: 1px solid ${({ isChecked }) => (isChecked ? "green" : "black")};
   color: ${({ isChecked }) => (isChecked ? "green" : "black")};
   background: white;
@@ -52,7 +53,6 @@ const IdNumber = styled.span`
 `;
 
 const QuantityContainer = styled.span`
-  position: absolute;
   top: 5px;
   display: flex;
   align-items: center;
