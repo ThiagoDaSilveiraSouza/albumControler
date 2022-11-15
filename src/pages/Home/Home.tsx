@@ -24,7 +24,7 @@ const HomeContainer = styled.section`
 `;
 
 export const Home = () => {
-  const [shareModalIsOpen, setShareModalIsOpen] = useState(true);
+  const [shareModalIsOpen, setShareModalIsOpen] = useState(false);
   const checkedListLocalStorageName = "checkedList";
   const cardListfromLocalStorage = getValueFromLocalStorage<ICard[]>(
     checkedListLocalStorageName
@@ -67,25 +67,27 @@ export const Home = () => {
     quantity: number = 1
   ) => {
     setCheckedList((checkedList) => {
-      const updatedCheckedList = checkedList.map((currentCard) => {
+      const updatedCheckedList = [...checkedList].map((currentCard) => {
         const isCurrentCard = currentCard.id === id;
+        const newCurrentCard = { ...currentCard };
 
         if (isCurrentCard) {
           if (addOrRemove === "add") {
-            currentCard.quantity = currentCard.quantity + quantity;
+            newCurrentCard.quantity = newCurrentCard.quantity + quantity;
           } else if (addOrRemove === "remove") {
-            const quantityIsGreaterOne = currentCard.quantity > 1;
+            const quantityIsGreaterOne = newCurrentCard.quantity > 1;
             if (quantityIsGreaterOne) {
-              currentCard.quantity = currentCard.quantity - quantity;
+              newCurrentCard.quantity = newCurrentCard.quantity - quantity;
             } else {
-              currentCard.quantity = 0;
-              currentCard.isChecked = false;
+              newCurrentCard.quantity = 0;
+              newCurrentCard.isChecked = false;
             }
           }
         }
 
-        return currentCard;
+        return newCurrentCard;
       });
+      updateLocalStorageCheckedList(updatedCheckedList);
       return updatedCheckedList;
     });
   };
@@ -114,7 +116,7 @@ export const Home = () => {
       )}
       <ShareModal
         useModal={[shareModalIsOpen, setShareModalIsOpen]}
-        missingCards={missingCards}
+        checkedList={checkedList}
       />
       <FloatMenu setShareModalIsOpen={setShareModalIsOpen} />
     </HomeContainer>

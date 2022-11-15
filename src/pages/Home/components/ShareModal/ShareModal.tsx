@@ -7,6 +7,9 @@ import { ICard } from "../../../../interfaces";
 // components
 import { Modal } from "../../../../components";
 
+// utils
+import { filterCardList } from "../../../../utils";
+
 interface ISharedModalContainer {
   isCopiedToClipBoard: boolean;
 }
@@ -41,21 +44,29 @@ const ListContainer = styled.div`
   box-sizing: border-box;
   border-radius: 10px;
   strong {
+    text-align: center;
   }
 `;
 
 interface IShareModal {
   useModal: [boolean, Dispatch<SetStateAction<boolean>>];
-  missingCards: ICard[];
+  checkedList: ICard[];
 }
 
-export const ShareModal = ({ useModal, missingCards }: IShareModal) => {
+export const ShareModal = ({ useModal, checkedList }: IShareModal) => {
   const [modalIsOpen] = useModal;
-  const missingCardsList = missingCards.map(({ id }) => id).join(", ");
+  const { missingCards } = filterCardList(checkedList);
   const [isCopiedToClipBoard, setIsCopieToClipBoard] = useState(false);
+  const haveMoreThanOneList = missingCards.filter(
+    ({ quantity }) => quantity > 2
+  );
+  const haveMoreThanOne = haveMoreThanOneList.length > 0;
+  const haveMoreThanOneString = haveMoreThanOneList
+    .map(({ id }) => id)
+    .join(", ");
 
   const copyButtonHandlerClick = () => {
-    navigator.clipboard.writeText(missingCardsList);
+    navigator.clipboard.writeText(haveMoreThanOneString);
     setIsCopieToClipBoard(true);
   };
 
@@ -70,10 +81,16 @@ export const ShareModal = ({ useModal, missingCards }: IShareModal) => {
       <ShareModalContainer isCopiedToClipBoard={isCopiedToClipBoard}>
         <h3>Lista de Figurinhas faltantes:</h3>
         <ListContainer>
-          <strong>{missingCardsList}</strong>
+          <strong>
+            {haveMoreThanOne
+              ? haveMoreThanOneString
+              : "Não há figurinha nenhuma sobrando..."}
+          </strong>
         </ListContainer>
         <span>Copiado!</span>
-        <button onClick={copyButtonHandlerClick}>Copiar</button>
+        <button onClick={copyButtonHandlerClick} disabled={!haveMoreThanOne}>
+          Copiar
+        </button>
       </ShareModalContainer>
     </Modal>
   );
