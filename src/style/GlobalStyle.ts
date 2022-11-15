@@ -1,3 +1,10 @@
+import { createGlobalStyle } from "styled-components";
+
+export const GlobalStyle = createGlobalStyle`
+body{
+    margin: 0;
+}
+
 .centralizer {
   margin: 0 auto;
   max-width: 95vw;
@@ -10,3 +17,4 @@
   flex-direction: column;
   align-items: center;
 }
+`;

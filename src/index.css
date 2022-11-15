@@ -34,12 +34,7 @@ button {
   font-family: inherit;
   font-weight: bold;
   cursor: pointer;
-  transition: border-color 0.25s;
   background: transparent;
-}
-button:hover {
-  border-color: red;
-  box-shadow: 0 0 3px 0 red;
 }
 button:focus,
 button:focus-visible {
