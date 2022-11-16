@@ -37,7 +37,7 @@ export const ShareModal = ({ useModal, obtainedCards }: IShareModal) => {
   return (
     <Modal useModal={useModal}>
       <ModalContainer isCopiedToClipBoard={isCopiedToClipBoard}>
-        <h3>Lista de Figurinhas faltantes:</h3>
+        <h3>Lista de Figurinhas sobrando:</h3>
         <ListContainer>
           <strong>
             {haveMoreThanOne
