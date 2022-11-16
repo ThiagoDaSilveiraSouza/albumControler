@@ -107,14 +107,14 @@ export const Home = () => {
       <CardContainer
         cardList={missingCards}
         cardHandleClick={cardHandleClick}
-        title={"Figurinha faltantes: " + obtainedCards.length}
+        title={"Figurinha faltantes: " + missingCards.length}
       />
       <button onClick={resetCheckedList}>Reiniciar lista</button>
       {!!missingCards.length && (
         <CardContainer
           cardList={obtainedCards}
           cardHandleClick={cardHandleClick}
-          title={"Figurinhas já adquiridas: " + missingCards.length}
+          title={"Figurinhas já adquiridas: " + obtainedCards.length}
           showQuantity
           addOrRemoveQuantity={addOrRemoveQuantity}
         />
