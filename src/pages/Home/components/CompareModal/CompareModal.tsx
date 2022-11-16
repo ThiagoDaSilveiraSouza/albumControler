@@ -53,7 +53,10 @@ export const CompareModal = ({ useModal, missingCards }: ICompareModal) => {
   const formHandlerSubmit = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const { value } = event.target;
-    const compareCardList = value.split(", ");
+    const valueIncludesComma = value.includes(",");
+    const compareCardList = valueIncludesComma
+      ? value.split(", ")
+      : value.split(" ");
     const missingCardsIdList = missingCards.map(({ id }) => id);
 
     compareLists(missingCardsIdList, compareCardList);
