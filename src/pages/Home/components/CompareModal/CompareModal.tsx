@@ -1,6 +1,6 @@
 import {
+  ChangeEvent,
   Dispatch,
-  FormEventHandler,
   SetStateAction,
   useEffect,
   useState,
@@ -20,16 +20,15 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 10px;
+  input {
+    font-size: 25px;
+    padding: 10px;
+  }
 `;
 
 interface ICompareModal {
   useModal: [boolean, Dispatch<SetStateAction<boolean>>];
   missingCards: ICard[];
-}
-
-interface IFormElement extends HTMLFormElement {
-  compareCardInput: HTMLInputElement;
 }
 
 export const CompareModal = ({ useModal, missingCards }: ICompareModal) => {
@@ -51,10 +50,10 @@ export const CompareModal = ({ useModal, missingCards }: ICompareModal) => {
     return needCards;
   };
 
-  const formHandlerSubmit: FormEventHandler<IFormElement> = (event) => {
+  const formHandlerSubmit = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const { compareCardInput } = event.target as IFormElement;
-    const compareCardList = compareCardInput.value.split(", ");
+    const { value } = event.target;
+    const compareCardList = value.split(", ");
     const missingCardsIdList = missingCards.map(({ id }) => id);
 
     compareLists(missingCardsIdList, compareCardList);
@@ -73,32 +72,33 @@ export const CompareModal = ({ useModal, missingCards }: ICompareModal) => {
 
   return (
     <Modal useModal={useModal}>
-      <Form onSubmit={formHandlerSubmit}>
+      <Form>
         <input
           type="text"
-          placeholder="Cole a lista de figurinhas"
+          placeholder="Cole aqui a lista de figurinhas..."
           name="compareCardInput"
+          onChange={formHandlerSubmit}
         />
-        <button type="submit">Comparar</button>
-      </Form>
-      <h3>Lista de Figurinhas faltantes:</h3>
-      <ModalContainer isCopiedToClipBoard={isCopiedToClipBoard}>
-        {haveMoreThanOne ? (
-          <>
+
+        <h3>Lista de Figurinhas faltantes:</h3>
+        <ModalContainer isCopiedToClipBoard={isCopiedToClipBoard}>
+          {haveMoreThanOne ? (
+            <>
+              <ListContainer>
+                <strong>{needCards.join(", ")}</strong>
+              </ListContainer>
+              <span>Copiado!</span>
+              <button onClick={copyButtonHandlerClick} type="button">
+                Copiar
+              </button>
+            </>
+          ) : (
             <ListContainer>
-              <strong>{needCards.join(", ")}</strong>
+              <strong>"Não há figurinha nenhuma que sirva..."</strong>
             </ListContainer>
-            <span>Copiado!</span>
-            <button onClick={copyButtonHandlerClick} type="button">
-              Copiar
-            </button>
-          </>
-        ) : (
-          <ListContainer>
-            <strong>"Não há figurinha nenhuma que sirva..."</strong>
-          </ListContainer>
-        )}
-      </ModalContainer>
+          )}
+        </ModalContainer>
+      </Form>
     </Modal>
   );
 };

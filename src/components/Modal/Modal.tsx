@@ -30,7 +30,7 @@ const ModalBg = styled.div<IModalContainer>`
 
 const ModalCard = styled.div<IModalContainer>`
   position: absolute;
-  padding: 20px;
+  padding: 35px;
   background: white;
   transform: ${({ modalIsOpen }) =>
     modalIsOpen ? "none" : "translateY(-100%)"};

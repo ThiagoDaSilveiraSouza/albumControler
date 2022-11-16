@@ -28,13 +28,20 @@ const CardStyle = styled.div<ICardStyle>`
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   align-items: center;
+  justify-content: space-evenly;
   width: 80px;
   height: 100px;
   background: white;
   user-select: none;
   cursor: pointer;
+  > strong {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    font-size: 15px;
+    margin: 0;
+  }
 
   ${({ isChecked, quantity }) => {
     if (isChecked) {
@@ -84,7 +91,7 @@ const CardStyle = styled.div<ICardStyle>`
 `;
 
 const IdNumber = styled.span`
-  font-size: 20px;
+  font-size: 30px;
 `;
 
 interface IQuantityContainer {
@@ -183,29 +190,32 @@ const CardComponent: FC<ICardComponent> = ({
       onClick={() => !addOrRemoveQuantity && cardHandleClick(currentCard.id)}
     >
       {showQuantity && (
-        <QuantityContainer
-          isChecked={currentCard.isChecked}
-          quantity={currentCard.quantity}
-        >
-          <QuantityButton
-            buttonType="remove"
-            onClick={() =>
-              addOrRemoveQuantity &&
-              addOrRemoveQuantity(currentCard.id, "remove")
-            }
+        <>
+          <strong>Extras</strong>
+          <QuantityContainer
+            isChecked={currentCard.isChecked}
+            quantity={currentCard.quantity}
           >
-            -
-          </QuantityButton>
-          <strong>{currentCard.quantity}</strong>
-          <QuantityButton
-            buttonType="add"
-            onClick={() =>
-              addOrRemoveQuantity && addOrRemoveQuantity(currentCard.id)
-            }
-          >
-            +
-          </QuantityButton>
-        </QuantityContainer>
+            <QuantityButton
+              buttonType="remove"
+              onClick={() =>
+                addOrRemoveQuantity &&
+                addOrRemoveQuantity(currentCard.id, "remove")
+              }
+            >
+              -
+            </QuantityButton>
+            <strong>{currentCard.quantity - 1}</strong>
+            <QuantityButton
+              buttonType="add"
+              onClick={() =>
+                addOrRemoveQuantity && addOrRemoveQuantity(currentCard.id)
+              }
+            >
+              +
+            </QuantityButton>
+          </QuantityContainer>
+        </>
       )}
       <IdNumber>{currentCard.id}</IdNumber>
     </CardStyle>

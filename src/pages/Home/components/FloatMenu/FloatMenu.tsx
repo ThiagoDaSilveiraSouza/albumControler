@@ -59,25 +59,22 @@ export const FloatMenu = ({
   return (
     <FloatMenuContainer>
       <NavMenu isShow={isShow}>
-        <h3>Extras</h3>
-        <div>
-          <button
-            onClick={() => {
-              setIsShow(false);
-              setShareModalIsOpen(true);
-            }}
-          >
-            Compartilhar
-          </button>
-          <button
-            onClick={() => {
-              setIsShow(false);
-              setCompareModalIsOpen(true);
-            }}
-          >
-            Comparar
-          </button>
-        </div>
+        <button
+          onClick={() => {
+            setIsShow(false);
+            setShareModalIsOpen(true);
+          }}
+        >
+          Compartilhar
+        </button>
+        <button
+          onClick={() => {
+            setIsShow(false);
+            setCompareModalIsOpen(true);
+          }}
+        >
+          Comparar
+        </button>
       </NavMenu>
       <Openbutton onClick={openButtonHandlerClick} />
     </FloatMenuContainer>
