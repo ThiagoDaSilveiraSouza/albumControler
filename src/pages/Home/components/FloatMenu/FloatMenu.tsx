@@ -15,6 +15,8 @@ interface INavMenu {
   isShow: boolean;
 }
 const NavMenu = styled.nav<INavMenu>`
+  position: absolute;
+  bottom: ${({ isShow }) => (isShow ? "70px" : "-200%")};
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -22,7 +24,6 @@ const NavMenu = styled.nav<INavMenu>`
   border: 1px solid black;
   border-radius: 10px;
   background: white;
-  transform: ${({ isShow }) => (isShow ? "none" : "translateX(200%)")};
   visibility: ${({ isShow }) => (isShow ? "visible" : "hidden")};
   opacity: ${({ isShow }) => (isShow ? 1 : 0)};
   transition: 0.3s;

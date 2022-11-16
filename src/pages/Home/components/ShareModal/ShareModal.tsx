@@ -16,7 +16,7 @@ export const ShareModal = ({ useModal, obtainedCards }: IShareModal) => {
   const [modalIsOpen] = useModal;
   const [isCopiedToClipBoard, setIsCopiedToClipBoard] = useState(false);
   const haveMoreThanOneList = obtainedCards.filter(
-    ({ quantity }) => quantity > 2
+    ({ quantity }) => quantity >= 2
   );
   const haveMoreThanOne = haveMoreThanOneList.length > 0;
   const haveMoreThanOneString = haveMoreThanOneList
