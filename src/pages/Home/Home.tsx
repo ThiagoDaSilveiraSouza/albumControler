@@ -1,7 +1,12 @@
 import { useState } from "react";
 
 // components
-import { CardContainer, FloatMenu, ShareModal } from "./components";
+import {
+  CardContainer,
+  CompareModal,
+  FloatMenu,
+  ShareModal,
+} from "./components";
 
 // utils
 import {
@@ -25,6 +30,7 @@ const HomeContainer = styled.section`
 
 export const Home = () => {
   const [shareModalIsOpen, setShareModalIsOpen] = useState(false);
+  const [compareModalIsOpen, setCompareModalIsOpen] = useState(true);
   const checkedListLocalStorageName = "checkedList";
   const cardListfromLocalStorage = getValueFromLocalStorage<ICard[]>(
     checkedListLocalStorageName
@@ -100,14 +106,14 @@ export const Home = () => {
   return (
     <HomeContainer>
       <CardContainer
-        cardList={obtainedCards}
+        cardList={missingCards}
         cardHandleClick={cardHandleClick}
         title={"Figurinha faltantes: " + obtainedCards.length}
       />
       <button onClick={resetCheckedList}>Reiniciar lista</button>
       {!!missingCards.length && (
         <CardContainer
-          cardList={missingCards}
+          cardList={obtainedCards}
           cardHandleClick={cardHandleClick}
           title={"Figurinhas já adquiridas: " + missingCards.length}
           showQuantity
@@ -116,9 +122,16 @@ export const Home = () => {
       )}
       <ShareModal
         useModal={[shareModalIsOpen, setShareModalIsOpen]}
-        checkedList={checkedList}
+        obtainedCards={obtainedCards}
       />
-      <FloatMenu setShareModalIsOpen={setShareModalIsOpen} />
+      <CompareModal
+        useModal={[compareModalIsOpen, setCompareModalIsOpen]}
+        missingCards={missingCards}
+      />
+      <FloatMenu
+        setShareModalIsOpen={setShareModalIsOpen}
+        setCompareModalIsOpen={setCompareModalIsOpen}
+      />
     </HomeContainer>
   );
 };

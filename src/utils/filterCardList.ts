@@ -10,7 +10,7 @@ export const filterCardList = (cardList: ICard[]): IFilteredCardList => {
     (filteredCardList, currentCard) => {
       const currentCardIsChecked = currentCard.isChecked;
 
-      if (currentCardIsChecked) {
+      if (!currentCardIsChecked) {
         filteredCardList.missingCards.push(currentCard);
       } else {
         filteredCardList.obtainedCards.push(currentCard);

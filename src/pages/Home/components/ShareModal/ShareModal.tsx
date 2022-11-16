@@ -7,9 +7,6 @@ import { ICard } from "../../../../interfaces";
 // components
 import { Modal } from "../../../../components";
 
-// utils
-import { filterCardList } from "../../../../utils";
-
 interface ISharedModalContainer {
   isCopiedToClipBoard: boolean;
 }
@@ -50,14 +47,13 @@ const ListContainer = styled.div`
 
 interface IShareModal {
   useModal: [boolean, Dispatch<SetStateAction<boolean>>];
-  checkedList: ICard[];
+  obtainedCards: ICard[];
 }
 
-export const ShareModal = ({ useModal, checkedList }: IShareModal) => {
+export const ShareModal = ({ useModal, obtainedCards }: IShareModal) => {
   const [modalIsOpen] = useModal;
-  const { missingCards } = filterCardList(checkedList);
-  const [isCopiedToClipBoard, setIsCopieToClipBoard] = useState(false);
-  const haveMoreThanOneList = missingCards.filter(
+  const [isCopiedToClipBoard, setIsCopiedToClipBoard] = useState(false);
+  const haveMoreThanOneList = obtainedCards.filter(
     ({ quantity }) => quantity > 2
   );
   const haveMoreThanOne = haveMoreThanOneList.length > 0;
@@ -67,12 +63,12 @@ export const ShareModal = ({ useModal, checkedList }: IShareModal) => {
 
   const copyButtonHandlerClick = () => {
     navigator.clipboard.writeText(haveMoreThanOneString);
-    setIsCopieToClipBoard(true);
+    setIsCopiedToClipBoard(true);
   };
 
   useEffect(() => {
     if (!modalIsOpen) {
-      setIsCopieToClipBoard(false);
+      setIsCopiedToClipBoard(false);
     }
   }, [modalIsOpen]);
 
