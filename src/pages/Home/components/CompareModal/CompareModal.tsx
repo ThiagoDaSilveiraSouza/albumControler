@@ -10,6 +10,9 @@ import styled from "styled-components";
 // components
 import { Modal } from "../../../../components";
 
+// styled components
+import { ListContainer, ModalContainer } from "../../../../styleComponents";
+
 // interfaces
 import { ICard } from "../../../../interfaces";
 
@@ -20,43 +23,6 @@ const Form = styled.form`
   padding: 10px;
 `;
 
-interface ICompareModalContainer {
-  isCopiedToClipBoard: boolean;
-}
-
-const CompareModalContainer = styled.div<ICompareModalContainer>`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-  box-sizing: border-box;
-  button {
-    :hover {
-      box-shadow: 0 0 3px 0 black;
-      color: green;
-      border: 1px solid green;
-    }
-    :focus {
-      outline: none;
-    }
-  }
-  span {
-    color: red;
-    text-align: center;
-    visibility: ${({ isCopiedToClipBoard }) =>
-      isCopiedToClipBoard ? "visible" : "hidden"};
-  }
-`;
-
-const ListContainer = styled.div`
-  border: 1px solid black;
-  padding: 5px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  strong {
-    text-align: center;
-  }
-`;
 interface ICompareModal {
   useModal: [boolean, Dispatch<SetStateAction<boolean>>];
   missingCards: ICard[];
@@ -103,7 +69,7 @@ export const CompareModal = ({ useModal, missingCards }: ICompareModal) => {
     if (!modalIsOpen) {
       setIsCopiedToClipBoard(false);
     }
-  }, []);
+  }, [modalIsOpen]);
 
   return (
     <Modal useModal={useModal}>
@@ -116,7 +82,7 @@ export const CompareModal = ({ useModal, missingCards }: ICompareModal) => {
         <button type="submit">Comparar</button>
       </Form>
       <h3>Lista de Figurinhas faltantes:</h3>
-      <CompareModalContainer isCopiedToClipBoard={isCopiedToClipBoard}>
+      <ModalContainer isCopiedToClipBoard={isCopiedToClipBoard}>
         {haveMoreThanOne ? (
           <>
             <ListContainer>
@@ -132,7 +98,7 @@ export const CompareModal = ({ useModal, missingCards }: ICompareModal) => {
             <strong>"Não há figurinha nenhuma que sirva..."</strong>
           </ListContainer>
         )}
-      </CompareModalContainer>
+      </ModalContainer>
     </Modal>
   );
 };

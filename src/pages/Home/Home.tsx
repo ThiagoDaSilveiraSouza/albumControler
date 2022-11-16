@@ -30,7 +30,7 @@ const HomeContainer = styled.section`
 
 export const Home = () => {
   const [shareModalIsOpen, setShareModalIsOpen] = useState(false);
-  const [compareModalIsOpen, setCompareModalIsOpen] = useState(true);
+  const [compareModalIsOpen, setCompareModalIsOpen] = useState(false);
   const checkedListLocalStorageName = "checkedList";
   const cardListfromLocalStorage = getValueFromLocalStorage<ICard[]>(
     checkedListLocalStorageName
@@ -57,7 +57,6 @@ export const Home = () => {
           } else {
             currentCard.quantity = 1;
           }
-          console.log("quantity", currentCard.quantity);
         }
         return currentCard;
       });
